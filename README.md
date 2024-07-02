@@ -377,3 +377,28 @@ By implementing these databases, we aim to compare their performance and identif
 ### Cassandra Data Model
 
 ![Cassandra_DataModel](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/39ce541d-2f0f-438e-ab52-87993923f566)
+
+## MySQL Queries and Results
+
+```SELECT
+                   customer.first_name,
+                   customer.last_name,
+                   customer.home_address,
+                   category.category_name,
+                   category.category_id,
+                   count(*) as 'No_of_time_purchased'
+               FROM customer
+               INNER JOIN orders
+               ON customer.customer_id = orders.customer_id
+               INNER JOIN sales
+               ON sales.order_id = orders.order_id
+               INNER JOIN products
+               ON sales.product_id = products.product_id
+               INNER JOIN category
+               ON products.category_id=category.category_id
+               WHERE customer.customer_id=1005
+               GROUP BY category.category_name, category.category_id
+               order by  No_of_time_purchased desc LIMIT 1
+```
+
+Time => 1 row retrieved starting from 1 in 336 ms (execution: 315 ms, fetching: 21 ms)
