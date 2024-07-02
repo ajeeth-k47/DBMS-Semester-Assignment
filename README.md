@@ -380,6 +380,7 @@ By implementing these databases, we aim to compare their performance and identif
 
 ## MySQL Queries and Results
 
+#### 1. Query to fetch frequently purchased category by a customer
 ```
                SELECT
                    customer.first_name,
@@ -403,3 +404,6 @@ By implementing these databases, we aim to compare their performance and identif
 ```
 
 Time => 1 row retrieved starting from 1 in 336 ms (execution: 315 ms, fetching: 21 ms)
+
+Result:
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/47db066a-6116-4770-8438-5c643ef7730b)
