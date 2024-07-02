@@ -207,7 +207,7 @@ By implementing these databases, we aim to compare their performance and identif
       }
     }
   }
-}```
+}
 
 ### MongoDB Data Model With Two Collections
 #### customers
