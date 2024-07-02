@@ -505,3 +505,44 @@ GROUP BY category.category_name, customer.age
 ORDER BY customer.age ASC,Total_Quantity DESC;
 ```
 Time => 189 rows retrieved starting from 1 in 727 ms (execution: 675 ms, fetching: 52 ms)
+
+### MongoDB Single Collection Queries and Results
+
+```
+db.customers.aggregate([
+  {$match: {customer_id: 1005}},
+  {$unwind: "$orders"},
+  {$unwind: "$orders.sales"},
+  {$group: {
+    _id: {
+      category_name: "$orders.sales.product.category_name",
+      first_name: "$first_name",
+      last_name: "$last_name",
+      home_address: "$home_address"
+    },
+    No_of_time_purchased: {$sum: 1}
+  }},
+  {$project: {
+    _id: 0,
+    first_name: "$_id.first_name",
+    last_name: "$_id.last_name",
+    home_address: "$_id.home_address",
+    category_name: "$_id.category_name",
+    No_of_time_purchased: 1
+  }},
+  {$sort: {No_of_time_purchased: -1}},
+  {$limit: 1}
+]);
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/95fa8b24-6b08-43a7-bf3f-9f2a6ca9d443)
+
+Result:  
+```
+{
+  "No_of_time_purchased": 5,
+  "first_name": "Imran",
+  "last_name": "Pai",
+  "home_address": "002 Beau PlazaApt. 308",
+  "category_name": "Shirt"
+}
+```
