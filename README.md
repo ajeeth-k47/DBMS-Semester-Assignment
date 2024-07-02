@@ -656,5 +656,48 @@ db.customers.aggregate([
 Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/aa39940a-824c-4a39-b838-73682c6bf293)
 
 
+#### MongoDB Two Collections Queries and Results
+
+#### 1. Query to fetch frequently purchased category by a customer
+```
+db.customers.aggregate([
+  {$match:{customer_id:1005}},
+  {$unwind:"$orders"},
+  {$unwind:"$orders.sales"},
+  {$lookup:{
+    from:"products",
+    localField:"orders.sales.product_id",
+    foreignField:"product_id",
+    as:"product_info"
+  }},
+  {$unwind:"$product_info"},
+  {$group:{
+    _id:{
+      category_name:"$product_info.category",
+      category_id:"$product_info.category_id",
+      first_name:"$first_name",
+      last_name:"$last_name",
+      home_address:"$home_address"
+    },
+    No_of_time_purchased:{$sum:1}
+  }},
+  {$project:{
+    _id:0,
+    first_name:"$_id.first_name",
+    last_name:"$_id.last_name",
+    home_address:"$_id.home_address",
+    category_name:"$_id.category_name",
+    category_id:"$_id.category_id",
+    No_of_time_purchased:1
+  }},
+  {$sort:{No_of_time_purchased:-1}},
+  {$limit:1}
+]);
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/41ac1dc8-7439-42db-9cee-f667ad199dab)
+
+Results: 
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/e2018e44-3b99-4f93-89fe-a45bfeafe881)
+
 
 
