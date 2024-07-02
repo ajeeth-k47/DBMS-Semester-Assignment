@@ -546,3 +546,53 @@ Result:
   "category_name": "Shirt"
 }
 ```
+#### 2. Query to fetch the category with highest quantity that is purchased by a customer
+```
+db.collection.aggregate([
+  {$match: {customer_id: 1005}},
+  {$unwind: "$orders"},
+  {$unwind: "$orders.sales"},
+  {$group: {
+    _id: {
+      category_name: "$orders.sales.product.category_name",
+      category_id: "$orders.sales.product.category_id"
+    },
+    No_of_quantity_purchased: {$sum: "$orders.sales.quantity"},
+    first_name: {$first: "$first_name"},
+    last_name: {$first: "$last_name"},
+    home_address: {$first: "$home_address"}
+  }},
+  {$sort: {No_of_quantity_purchased: -1}}
+]);
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/7fff7595-89d3-49e2-817a-dedae131d48f)
+
+Result: 
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/cad0af66-e759-4425-9910-64f1b33992bd)
+
+#### 3. Query to fetch category for which the customer spend lot of money
+```
+db.collection.aggregate([
+  {$match: {customer_id: 1005}},
+  {$unwind: "$orders"},
+  {$unwind: "$orders.sales"},
+  {$group: {
+    _id: {
+      category_name: "$orders.sales.product.category_name",
+      category_id: "$orders.sales.product.category_id"
+    },
+    Total_Purchase_Price_For_EachCategory: {$sum: "$orders.sales.total_price"},
+    first_name: {$first: "$first_name"},
+    last_name: {$first: "$last_name"},
+    gender: {$first: "$gender"},
+    home_address: {$first: "$home_address"}
+  }},
+  {$sort: {Total_Purchase_Price_For_EachCategory: -1}},
+  {$limit: 1}
+]);
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/8cad06ce-7b7a-4d1e-846c-6a2973b7bb4b)
+
+Result:
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/924dbfc2-a6fe-4d7d-a8e9-9b19defbabad)
+
