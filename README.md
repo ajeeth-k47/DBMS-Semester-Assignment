@@ -534,7 +534,7 @@ db.customers.aggregate([
   {$limit: 1}
 ]);
 ```
-Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/95fa8b24-6b08-43a7-bf3f-9f2a6ca9d443)
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/f8216c5d-49ef-4dad-be7d-32de4c5e6fb9)
 
 Result:  
 ```
@@ -699,5 +699,33 @@ Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/6
 Results: 
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/e2018e44-3b99-4f93-89fe-a45bfeafe881)
 
-
-
+#### 2. Query to fetch the category with highest quantity that is purchased by a customer
+```
+db.shopping_cart.aggregate([
+  {$match:{customer_id:1005}},
+  {$unwind:"$orders"},
+  {$unwind:"$orders.sales"},
+  {$lookup:{
+    from:"products",
+    localField:"orders.sales.product_id",
+    foreignField:"product_id",
+    as:"product_info"
+  }},
+  {$unwind:"$product_info"},
+  {$group:{
+    _id:{category:"$product_info.category"},
+    No_of_quantity_purchased:{$sum:"$orders.sales.quantity"},
+    customer_info:{$first:{first_name:"$first_name",last_name:"$last_name",home_address:"$home_address"}}
+  }},
+  {$sort:{No_of_quantity_purchased:-1}},
+  {$project:{
+    _id:0,
+    first_name:"$customer_info.first_name",
+    last_name:"$customer_info.last_name",
+    home_address:"$customer_info.home_address",
+    category:"$_id.category",
+    No_of_quantity_purchased:1
+  }}
+]);
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/55cec64d-9850-48f9-809c-f214f7aeea7d)
