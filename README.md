@@ -507,7 +507,7 @@ ORDER BY customer.age ASC,Total_Quantity DESC;
 Time => 189 rows retrieved starting from 1 in 727 ms (execution: 675 ms, fetching: 52 ms)
 
 ### MongoDB Single Collection Queries and Results
-
+#### 1. Query to fetch frequently purchased category by a customer
 ```
 db.customers.aggregate([
   {$match: {customer_id: 1005}},
