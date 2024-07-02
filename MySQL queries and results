@@ -1,0 +1,22 @@
+# Query to fetch frequently purchased category by a customer
+
+SELECT
+    customer.first_name,
+    customer.last_name,
+    customer.home_address,
+    category.category_name,
+    category.category_id,
+    count(*) as 'No_of_time_purchased'
+FROM customer
+INNER JOIN orders
+ON customer.customer_id = orders.customer_id
+INNER JOIN sales
+ON sales.order_id = orders.order_id
+INNER JOIN products
+ON sales.product_id = products.product_id
+INNER JOIN category
+ON products.category_id=category.category_id
+WHERE customer.customer_id=1005
+GROUP BY category.category_name, category.category_id
+order by  No_of_time_purchased desc LIMIT 1;
+
