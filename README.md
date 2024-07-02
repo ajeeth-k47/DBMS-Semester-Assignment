@@ -373,3 +373,7 @@ By implementing these databases, we aim to compare their performance and identif
   }
 }
 ```
+
+### Cassandra Data Model
+
+![Cassandra_DataModel](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/39ce541d-2f0f-438e-ab52-87993923f566)
