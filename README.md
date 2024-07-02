@@ -368,7 +368,7 @@ By implementing these databases, we aim to compare their performance and identif
       },
       colour: {
         bsonType: "string",
-        description:
+        description: 
           "must be a string and is required"
       },
       price: {
