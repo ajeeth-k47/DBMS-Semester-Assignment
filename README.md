@@ -23,5 +23,7 @@ This project aims to determine the top product categories driving sales in an e-
 
 By implementing these databases, we aim to compare their performance and identify which is most suitable for analyzing e-commerce sales data, focusing on the research question: What are the top product categories driving sales, and how do these preferences vary by customer demographics and age groups?
 
-## MySQL Data Model
+## Data Models
+
+### MySQL Data Model
 ![MySQL_DataModel](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/b49dfb79-4f5a-49cb-891f-b547d51b2109)
