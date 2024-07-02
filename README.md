@@ -596,3 +596,39 @@ Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/6
 Result:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/924dbfc2-a6fe-4d7d-a8e9-9b19defbabad)
 
+#### 4. Query to fetch the total amount of quantity purchased per category by all customers in a state
+```
+db.collection.aggregate([
+  {$unwind: "$orders"},
+  {$unwind: "$orders.sales"},
+  {$project: {
+    state: "$state",
+    category_name: "$orders.sales.product.category_name",
+    quantity: "$orders.sales.quantity"
+  }},
+  {$group: {
+    _id: {
+      state: "$state",
+      category_name: "$category_name"
+    },
+    Total_Quantity: {$sum: "$quantity"},
+    CountOfEachCategory_inEachState: {$sum: 1}
+  }},
+  {$project: {
+    _id: 0,
+    state: "$_id.state",
+    category_name: "$_id.category_name",
+    Total_Quantity: 1,
+    CountOfEachCategory_inEachState: 1
+  }},
+  {$sort: {state: 1, Total_Quantity: -1}}
+]);
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/b4f51dcf-ee8b-4723-a244-4d7edc398f89)
+
+Result:
+total 172 documents here I specified small amount of result as it consumes lot of space
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/fd481031-527f-43f5-a690-2a730010abc9)
+
+
+
