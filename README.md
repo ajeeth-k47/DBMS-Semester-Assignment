@@ -407,3 +407,101 @@ Time => 1 row retrieved starting from 1 in 336 ms (execution: 315 ms, fetching: 
 
 Result:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/47db066a-6116-4770-8438-5c643ef7730b)
+
+#### 2. Query to fetch the category with highest quantity that is purchased by a customer
+```
+SELECT
+    customer.first_name,
+    customer.last_name,
+    customer.home_address,
+    category.category_name,
+    category.category_id,
+    SUM(sales.quantity) as 'No_of_quantity_purchased'
+FROM customer
+INNER JOIN orders
+ON customer.customer_id = orders.customer_id
+INNER JOIN sales
+ON sales.order_id = orders.order_id
+INNER JOIN products
+ON sales.product_id = products.product_id
+INNER JOIN category
+ON products.category_id=category.category_id
+WHERE customer.customer_id=1005
+GROUP BY category.category_name, category.category_id
+order by  No_of_quantity_purchased desc;
+```
+Time => 3 rows retrieved starting from 1 in 291 ms (execution: 262 ms, fetching: 29 ms)
+
+Result: 
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/f27367d1-f773-4f7d-a48c-d20416ca79a1)
+
+#### 3. Query to fetch category for which the customer spend lot of money
+```
+SELECT
+    customer.first_name,
+    customer.last_name,
+    customer.gender,
+    customer.home_address,
+    category.category_name,
+    category.category_id,
+    SUM(sales.total_price) as 'Total_Purchase_Price_For_EachCategory'
+FROM customer
+INNER JOIN orders
+ON customer.customer_id = orders.customer_id
+INNER JOIN sales
+ON sales.order_id = orders.order_id
+INNER JOIN products
+ON sales.product_id = products.product_id
+INNER JOIN category
+ON products.category_id=category.category_id
+WHERE customer.customer_id=1005
+GROUP BY category.category_name, category.category_id
+ORDER BY Total_Purchase_Price_For_EachCategory DESC LIMIT 1;
+```
+Time => 1 row retrieved starting from 1 in 340 ms (execution: 321 ms, fetching: 19 ms)
+
+Result:
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/f0991578-392a-4627-8051-a91ec37fa163)
+
+
+#### 4. Query to fetch the total amount of quantity purchased per category by all customers in a state
+```
+SELECT
+    customer.state,
+    category.category_name,
+    SUM(sales.quantity) as "Total_Quantity",
+    COUNT(*) as "CountOfEachCategory_inEachState"
+FROM customer
+INNER JOIN orders
+ON customer.customer_id = orders.customer_id
+INNER JOIN sales
+ON sales.order_id = orders.order_id
+INNER JOIN products
+ON sales.product_id = products.product_id
+INNER JOIN category
+ON products.category_id=category.category_id
+GROUP BY category.category_name, customer.state
+ORDER BY customer.state ASC,Total_Quantity DESC;
+```
+Time => 174 rows retrieved starting from 1 in 746 ms (execution: 722 ms, fetching: 24 ms)
+
+#### 5. Query to fetch no of quantity purchased by age group for each category
+```
+SELECT
+    customer.age,
+    category.category_name,
+    SUM(sales.quantity) as "Total_Quantity",
+    COUNT(*) as "Count_of_each_category_ineachage"
+FROM customer
+INNER JOIN orders
+ON customer.customer_id = orders.customer_id
+INNER JOIN sales
+ON sales.order_id = orders.order_id
+INNER JOIN products
+ON sales.product_id = products.product_id
+INNER JOIN category
+ON products.category_id=category.category_id
+GROUP BY category.category_name, customer.age
+ORDER BY customer.age ASC,Total_Quantity DESC;
+```
+Time => 189 rows retrieved starting from 1 in 727 ms (execution: 675 ms, fetching: 52 ms)
