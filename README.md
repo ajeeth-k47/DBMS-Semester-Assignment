@@ -630,5 +630,31 @@ Result:
 total 172 documents here I specified small amount of result as it consumes lot of space
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/fd481031-527f-43f5-a690-2a730010abc9)
 
+#### 5. Query to fetch no of quantity purchased by age group for each category
+```
+db.customers.aggregate([
+  {$unwind: "$orders"},
+  {$unwind: "$orders.sales"},
+  {$group: {
+    _id: {
+      age: "$age",
+      category_name: "$orders.sales.product.category_name"
+    },
+    Total_Quantity: {$sum: "$orders.sales.quantity"},
+    Count_of_each_category_in_each_age: {$sum: 1}
+  }},
+  {$project: {
+    _id: 0,
+    age: "$_id.age",
+    category_name: "$_id.category_name",
+    Total_Quantity: 1,
+    Count_of_each_category_in_each_age: 1
+  }},
+  {$sort: {age: 1, Total_Quantity: -1}}
+]);
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/aa39940a-824c-4a39-b838-73682c6bf293)
+
+
 
 
