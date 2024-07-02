@@ -729,3 +729,7 @@ db.shopping_cart.aggregate([
 ]);
 ```
 Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/55cec64d-9850-48f9-809c-f214f7aeea7d)
+
+Result: 
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/c6091236-c1f9-4129-92b3-384c4a673086)
+
