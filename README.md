@@ -380,7 +380,8 @@ By implementing these databases, we aim to compare their performance and identif
 
 ## MySQL Queries and Results
 
-```SELECT
+```
+               SELECT
                    customer.first_name,
                    customer.last_name,
                    customer.home_address,
