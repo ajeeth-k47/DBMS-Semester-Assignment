@@ -214,9 +214,9 @@ By implementing these databases, we aim to compare their performance and identif
 #### customers
 ```json
 {
-  $jsonSchema: {
-    bsonType: "object",
-    required: [
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
       "first_name",
       "last_name",
       "gender",
@@ -228,102 +228,87 @@ By implementing these databases, we aim to compare their performance and identif
       "country",
       "orders"
     ],
-    properties: {
-      first_name: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+    "properties": {
+      "first_name": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      last_name: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+      "last_name": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      gender: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+      "gender": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      age: {
-        bsonType: "int",
-        description:
-          "must be an integer and is required"
+      "age": {
+        "bsonType": "int",
+        "description": "must be an integer and is required"
       },
-      home_address: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+      "home_address": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      zip_code: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+      "zip_code": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      city: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+      "city": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      state: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+      "state": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      country: {
-        bsonType: "string",
-        description:
-          "must be a string and is required"
+      "country": {
+        "bsonType": "string",
+        "description": "must be a string and is required"
       },
-      orders: {
-        bsonType: "array",
-        items: {
-          bsonType: "object",
-          required: [
+      "orders": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "object",
+          "required": [
             "order_date",
             "delivery_date",
             "sales"
           ],
-          properties: {
-            order_date: {
-              bsonType: "date",
-              description:
-                "must be a date and is required"
+          "properties": {
+            "order_date": {
+              "bsonType": "date",
+              "description": "must be a date and is required"
             },
-            delivery_date: {
-              bsonType: "date",
-              description:
-                "must be a date and is required"
+            "delivery_date": {
+              "bsonType": "date",
+              "description": "must be a date and is required"
             },
-            sales: {
-              bsonType: "array",
-              items: {
-                bsonType: "object",
-                required: [
+            "sales": {
+              "bsonType": "array",
+              "items": {
+                "bsonType": "object",
+                "required": [
                   "product_id",
                   "price_per_unit",
                   "quantity",
                   "total_price"
                 ],
-                properties: {
-                  product_id: {
-                    bsonType: "int",
-                    description:
-                      "must be an integer and is required"
+                "properties": {
+                  "product_id": {
+                    "bsonType": "int",
+                    "description": "must be an integer and is required"
                   },
-                  price_per_unit: {
-                    bsonType: "number",
-                    description:
-                      "must be a number and is required"
+                  "price_per_unit": {
+                    "bsonType": "number",
+                    "description": "must be a number and is required"
                   },
-                  quantity: {
-                    bsonType: "int",
-                    description:
-                      "must be an integer and is required"
+                  "quantity": {
+                    "bsonType": "int",
+                    "description": "must be an integer and is required"
                   },
-                  total_price: {
-                    bsonType: "number",
-                    description:
-                      "must be a number and is required"
+                  "total_price": {
+                    "bsonType": "number",
+                    "description": "must be a number and is required"
                   }
                 }
               }
@@ -334,6 +319,7 @@ By implementing these databases, we aim to compare their performance and identif
     }
   }
 }
+
 ```
 #### products
 ```json
