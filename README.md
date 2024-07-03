@@ -836,9 +836,203 @@ db.customers.aggregate([
   }
 ])
 ```
-Time => It tooks around 20 seconds 
+Time => It tooks around 20 seconds to fetch the result
 
 
 #### 5. Query to fetch no of quantity purchased by age group for each category
+```
+db.customers.aggregate([
+  { $unwind: "$orders" },
+  { $unwind: "$orders.sales" },
+  { 
+    $lookup: { 
+      from: "products", 
+      localField: "orders.sales.product_id", 
+      foreignField: "product_id", 
+      as: "product_info" 
+    } 
+  },
+  { $unwind: "$product_info" },
+  { 
+    $lookup: { 
+      from: "category", 
+      localField: "product_info.category_id", 
+      foreignField: "category_id", 
+      as: "category_info" 
+    } 
+  },
+  { $unwind: "$category_info" },
+  { 
+    $group: { 
+      _id: { age: "$age", category_name: "$category_info.category_name" }, 
+      Total_Quantity: { $sum: "$orders.sales.quantity" }, 
+      Count_of_each_category_ineachage: { $sum: 1 }
+    } 
+  },
+  { 
+    $sort: { 
+      "_id.age": 1, 
+      Total_Quantity: -1 
+    } 
+  },
+  { 
+    $project: { 
+      _id: 0, 
+      age: "$_id.age", 
+      category_name: "$_id.category_name", 
+      Total_Quantity: 1, 
+      Count_of_each_category_ineachage: 1 
+    } 
+  }
+])
+```
+Time => it tooks around 32 seconds to fetch the result.
+
+
+### Cassandra Queries and Results
+#### 1. Query to fetch frequently purchased category by a customer
+```
+start_time = time.time()
+def main():
+    cluster = Cluster(['172.17.0.2'])
+    session = cluster.connect('my_keyspace')
+    query = "SELECT first_name, last_name, home_address, category_name, category_id FROM denormalized_data WHERE customer_id = 1005"
+    rows = session.execute(query)
+    counter = Counter((row.first_name, row.last_name, row.home_address, row.category_name, row.category_id) for row in rows)
+    most_common_category = counter.most_common(1)
+    if most_common_category:
+        first_name, last_name, home_address, category_name, category_id = most_common_category[0][0]
+        no_of_time_purchased = most_common_category[0][1]
+        print(f"First Name: {first_name}, Last Name: {last_name}, Home address: {home_address}, Category Name: {category_name}, Category ID: {category_id}, No of Times Purchased: {no_of_time_purchased}")
+    else:
+        print("No purchases found for the customer.")
+    cluster.shutdown()
+if __name__ == "__main__":
+    main()
+
+end_time = time.time()
+```
+
+Time and Result:
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/d5e10c06-b8ff-42b9-acba-a21e8b29bfe7)
+
+#### 2. Query to fetch the category with highest quantity that is purchased by a customer
+```
+start_time = time.time()
+def main():
+    cluster = Cluster(['172.17.0.2'])
+    session = cluster.connect('my_keyspace')
+    query = """
+        SELECT first_name, last_name, home_address, category_name, category_id, quantity 
+        FROM denormalized_data 
+        WHERE customer_id = 1005
+    """
+    rows = session.execute(query)
+    category_totals = defaultdict(int)
+    customer_info = None
+    for row in rows:
+        if not customer_info:
+            customer_info = {
+                'first_name': row.first_name,
+                'last_name': row.last_name,
+                'home_address': row.home_address
+            }
+        category_name = row.category_name
+        category_id = row.category_id
+        quantity = row.quantity
+        category_totals[(category_name, category_id)] += quantity
+    sorted_categories = sorted(category_totals.items(), key=lambda x: x[1], reverse=True)
+    if customer_info:
+        print(f"Customer Information:")
+        print(f"   - First Name: {customer_info['first_name']}")
+        print(f"   - Last Name: {customer_info['last_name']}")
+        print(f"   - Home Address: {customer_info['home_address']}")
+    else:
+        print("No customer information found.")
+    if sorted_categories:
+        print("\nCategories Purchased:")
+        for (category_name, category_id), total_quantity in sorted_categories:
+            print(f"   - Category Name: {category_name}, Category ID: {category_id}, Total Quantity Purchased: {total_quantity}")
+    else:
+        print("No purchases found for the customer.")
+    cluster.shutdown()
+
+if __name__ == "__main__":
+    main()
+
+end_time = time.time()
+```
+
+Time and Result: 
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/0233fcc4-e338-492d-911a-05c35493064b)
+
+#### 3. Query to fetch category for which the customer spend lot of money
+```
+start_time = time.time()
+def main():
+    cluster = Cluster(['172.17.0.2'])
+    session = cluster.connect('my_keyspace')
+
+    query = """
+        SELECT first_name, last_name, gender, home_address, category_name, category_id, total_price
+        FROM denormalized_data
+        WHERE customer_id = 1005
+    """
+    rows = session.execute(query)
+    category_totals = defaultdict(int)
+    customer_info = None
+
+    for row in rows:
+        if not customer_info:
+            customer_info = {
+                'first_name': row.first_name,
+                'last_name': row.last_name,
+                'gender': row.gender,
+                'home_address': row.home_address
+            }
+
+        category_name = row.category_name
+        category_id = row.category_id
+        total_price = row.total_price
+        category_totals[(category_name, category_id)] += total_price
+
+    if category_totals:
+        most_purchased_category = max(category_totals, key=category_totals.get)
+        category_name, category_id = most_purchased_category
+        total_purchase_price = category_totals[most_purchased_category]
+
+        print(f"Customer Information:")
+        print(f"   - First Name: {customer_info['first_name']}")
+        print(f"   - Last Name: {customer_info['last_name']}")
+        print(f"   - Gender: {customer_info['gender']}")
+        print(f"   - Home Address: {customer_info['home_address']}")
+
+        print(f"Most Purchased Category:")
+        print(f"   - Category Name: {category_name}")
+        print(f"   - Category ID: {category_id}")
+        print(f"   - Total Purchase Price: {total_purchase_price}")
+    else:
+        print("No purchases found for the customer.")
+
+    cluster.shutdown()
+
+if __name__ == "__main__":
+    main()
+
+end_time = time.time()
+```
+Time and Results:
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/b4cedb7a-20a5-4747-9164-669fe9c04a70)
+
+
+
+
+
+
+
+
+
+
+
 
 
