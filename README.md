@@ -988,16 +988,8 @@ def main():
         category_name, category_id = most_purchased_category
         total_purchase_price = category_totals[most_purchased_category]
 
-        print(f"Customer Information:")
-        print(f"   - First Name: {customer_info['first_name']}")
-        print(f"   - Last Name: {customer_info['last_name']}")
-        print(f"   - Gender: {customer_info['gender']}")
-        print(f"   - Home Address: {customer_info['home_address']}")
-
-        print(f"Most Purchased Category:")
-        print(f"   - Category Name: {category_name}")
-        print(f"   - Category ID: {category_id}")
-        print(f"   - Total Purchase Price: {total_purchase_price}")
+        print statement...
+ 
     else:
         print("No purchases found for the customer.")
 
