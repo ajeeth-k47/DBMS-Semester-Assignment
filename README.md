@@ -735,3 +735,110 @@ Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/6
 Result: 
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/c6091236-c1f9-4129-92b3-384c4a673086)
 
+#### 3. Query to fetch category for which the customer spend lot of money
+```
+db.shopping_cart.aggregate([
+  { $match: { customer_id: 1005 } },
+  { $unwind: "$orders" },
+  { $unwind: "$orders.sales" },
+  { 
+    $lookup: { 
+      from: "products", 
+      localField: "orders.sales.product_id", 
+      foreignField: "product_id", 
+      as: "product_info" 
+    } 
+  },
+  { $unwind: "$product_info" },
+  { 
+    $group: { 
+      _id: { category: "$product_info.category" }, 
+      Total_Purchase_Price_For_EachCategory: { $sum: "$orders.sales.total_price" }, 
+      customer_info: {  
+        $first: {  
+          first_name: "$first_name",  
+          last_name: "$last_name",  
+          gender: "$gender",  
+          home_address: "$home_address"  
+        }  
+      } 
+    } 
+  },
+  { $sort: { Total_Purchase_Price_For_EachCategory: -1 } },
+  { $limit: 1 },
+  { 
+    $project: { 
+      _id: 0, 
+      first_name: "$customer_info.first_name", 
+      last_name: "$customer_info.last_name", 
+      gender: "$customer_info.gender", 
+      home_address: "$customer_info.home_address", 
+      category: "$_id.category", 
+      Total_Purchase_Price_For_EachCategory: 1 
+    } 
+  }
+])
+```
+Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/87c2a9c7-44ca-4657-8e27-ad88118e1d94)
+Result:
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/9d085710-a84d-4971-81ce-87b5a8ecca19)
+
+#### 4. Query to fetch the total amount of quantity purchased per category by all customers in a state
+```
+db.customers.aggregate([
+  { $unwind: "$orders" },
+  { $unwind: "$orders.sales" },
+  { $lookup: {
+      from: "products",
+      localField: "orders.sales.product_id",
+      foreignField: "product_id",
+      as: "product_info"
+    }
+  },
+  { $unwind: "$product_info" },
+  { $group: {
+      _id: { state: "$state", category: "$product_info.category" },
+      Total_Quantity: { $sum: "$orders.sales.quantity" },
+      CountOfEachCategory_inEachState: { $sum: 1 }
+    }
+  },
+  { $sort: {
+      "_id.state": 1,
+      Total_Quantity: -1
+    }
+  },
+  { $group: {
+      _id: "$_id.state",
+      categories: {
+        $push: {
+          category: "$_id.category",
+          Total_Quantity: "$Total_Quantity"
+        }
+      }
+    }
+  },
+  { $project: {
+      _id: 0,
+      state: "$_id",
+      top_category: { $arrayElemAt: ["$categories", 0] }
+    }
+  },
+  { $unwind: "$top_category" },
+  { $project: {
+      state: 1,
+      category_name: "$top_category.category",
+      Total_Quantity: "$top_category.Total_Quantity"
+    }
+  },
+  { $sort: {
+      state: 1
+    }
+  }
+])
+```
+Time => It tooks around 20 seconds 
+
+
+#### 5. Query to fetch no of quantity purchased by age group for each category
+
+
