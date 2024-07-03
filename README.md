@@ -823,7 +823,7 @@ db.customers.aggregate([
   }
 ])
 ```
-Time => It tooks around 20 seconds to fetch the result
+Time => It tooks around 20 seconds to fetch the result.I cannot include the result because it take too much space here.
 
 
 #### 5. Query to fetch no of quantity purchased by age group for each category
@@ -873,11 +873,38 @@ db.customers.aggregate([
   }
 ])
 ```
-Time => it tooks around 32 seconds to fetch the result.
+Time => it tooks around 32 seconds to fetch the result. I cannot include the result because it take too much space here.
 
 
 ### Cassandra Queries and Results
 #### 1. Query to fetch frequently purchased category by a customer
+```
+CREATE TABLE my_keyspace.customer_category_aggregates (
+customer_id int,
+first_name text,
+last_name text,
+gender text,
+home_address text,
+category_id int,
+category_name text,
+total_purchase_price decimal,
+PRIMARY KEY (customer_id, total_purchase_price, category_id)
+) WITH CLUSTERING ORDER BY (total_purchase_price DESC);
+
+SELECT 
+first_name,
+last_name,
+gender,
+home_address,
+category_name,
+category_id,
+total_purchase_price
+FROM my_keyspace.customer_category_aggregates
+WHERE customer_id = 19
+LIMIT 1;
+
+```
+or 
 ```
 start_time = time.time()
 def main():
@@ -954,6 +981,37 @@ Time and Result:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/0233fcc4-e338-492d-911a-05c35493064b)
 
 #### 3. Query to fetch category for which the customer spend lot of money
+
+```
+
+CREATE TABLE my_keyspace.customer_category_aggregates_s3 (
+customer_id int,
+first_name text,
+last_name text,
+gender text,
+home_address text,
+category_id int,
+category_name text,
+total_purchase_price decimal,
+PRIMARY KEY (customer_id, total_purchase_price, category_id)
+) WITH CLUSTERING ORDER BY (total_purchase_price DESC);
+
+SELECT 
+first_name,
+last_name,
+gender,
+home_address,
+category_name,
+category_id,
+total_purchase_price
+FROM my_keyspace.customer_category_aggregates_s3
+WHERE customer_id = 19
+LIMIT 1;
+
+```
+
+or
+
 ```
 start_time = time.time()
 def main():
