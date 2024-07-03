@@ -403,8 +403,7 @@ By implementing these databases, we aim to compare their performance and identif
                order by  No_of_time_purchased desc LIMIT 1
 ```
 
-Time before indexing => 1 row retrieved starting from 1 in 336 ms (execution: 315 ms, fetching: 21 ms)
-Time after indexing  => 1 row retrieved starting from 1 in 96 ms (execution: 19 ms, fetching: 77 ms)
+Time => 1 row retrieved starting from 1 in 96 ms (execution: 19 ms, fetching: 77 ms)
 
 Result:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/47db066a-6116-4770-8438-5c643ef7730b)
@@ -431,8 +430,8 @@ WHERE customer.customer_id=1005
 GROUP BY category.category_name, category.category_id
 order by  No_of_quantity_purchased desc;
 ```
-Time before indexing => 3 rows retrieved starting from 1 in 291 ms (execution: 262 ms, fetching: 29 ms)
-Time after indexing => 3 rows retrieved starting from 1 in 107 ms (execution: 25 ms, fetching: 82 ms)
+
+Time  => 3 rows retrieved starting from 1 in 107 ms (execution: 25 ms, fetching: 82 ms)
 
 Result: 
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/f27367d1-f773-4f7d-a48c-d20416ca79a1)
@@ -460,8 +459,8 @@ WHERE customer.customer_id=1005
 GROUP BY category.category_name, category.category_id
 ORDER BY Total_Purchase_Price_For_EachCategory DESC LIMIT 1;
 ```
-Time before indexing => 1 row retrieved starting from 1 in 340 ms (execution: 321 ms, fetching: 19 ms)
-Time after indexing =>  1 row retrieved starting from 1 in 111 ms (execution: 11 ms, fetching: 100 ms)
+
+Time  =>  1 row retrieved starting from 1 in 111 ms (execution: 11 ms, fetching: 100 ms)
 
 Result:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/f0991578-392a-4627-8051-a91ec37fa163)
@@ -486,8 +485,7 @@ ON products.category_id=category.category_id
 GROUP BY category.category_name, customer.state
 ORDER BY customer.state ASC,Total_Quantity DESC;
 ```
-Time before indexing => 174 rows retrieved starting from 1 in 746 ms (execution: 722 ms, fetching: 24 ms)
-Time ater indexing => 174 rows retrieved starting from 1 in 851 ms (execution: 822 ms, fetching: 29 ms)
+Time => 174 rows retrieved starting from 1 in 851 ms (execution: 822 ms, fetching: 29 ms)
 
 #### 5. Query to fetch no of quantity purchased by age group for each category
 ```
@@ -508,8 +506,7 @@ ON products.category_id=category.category_id
 GROUP BY category.category_name, customer.age
 ORDER BY customer.age ASC,Total_Quantity DESC;
 ```
-Time before indexing => 189 rows retrieved starting from 1 in 727 ms (execution: 675 ms, fetching: 52 ms)
-Time after indexing => 189 rows retrieved starting from 1 in 813 ms (execution: 783 ms, fetching: 30 ms)
+Time => 189 rows retrieved starting from 1 in 813 ms (execution: 783 ms, fetching: 30 ms)
 
 ### MongoDB Single Collection Queries and Results
 #### 1. Query to fetch frequently purchased category by a customer
