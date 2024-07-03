@@ -26,7 +26,7 @@ By implementing these databases, we aim to compare their performance and identif
 ## Data Models
 
 ### MySQL Data Model
-![MySQL_DataModel](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/b49dfb79-4f5a-49cb-891f-b547d51b2109)
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/0c4110de-427f-4940-aaaa-f66436d5e95a)
 
 ### MongoDB Data Model With Single Collection
 ```json{
