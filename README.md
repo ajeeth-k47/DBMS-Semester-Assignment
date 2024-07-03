@@ -403,7 +403,7 @@ By implementing these databases, we aim to compare their performance and identif
                order by  No_of_time_purchased desc LIMIT 1
 ```
 
-Time => 1 row retrieved starting from 1 in 43 ms (execution: 19 ms, fetching: 77 ms)
+Time => 1 row retrieved starting from 1 in 53 ms (execution: 7 ms, fetching: 46 ms)
 
 Result:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/47db066a-6116-4770-8438-5c643ef7730b)
@@ -431,7 +431,7 @@ GROUP BY category.category_name, category.category_id
 order by  No_of_quantity_purchased desc;
 ```
 
-Time  => 3 rows retrieved starting from 1 in 74 ms (execution: 25 ms, fetching: 82 ms)
+Time  => 3 rows retrieved starting from 1 in 42 ms (execution: 7 ms, fetching: 35 ms)
 
 Result: 
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/f27367d1-f773-4f7d-a48c-d20416ca79a1)
@@ -460,8 +460,7 @@ GROUP BY category.category_name, category.category_id
 ORDER BY Total_Purchase_Price_For_EachCategory DESC LIMIT 1;
 ```
 
-Time  =>  1 row retrieved starting from 1 in 38 ms (execution: 11 ms, fetching: 100 ms)
-
+Time  =>  1 row retrieved starting from 1 in 47 ms (execution: 9 ms, fetching: 38 ms)
 Result:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/f0991578-392a-4627-8051-a91ec37fa163)
 
@@ -485,7 +484,7 @@ ON products.category_id=category.category_id
 GROUP BY category.category_name, customer.state
 ORDER BY customer.state ASC,Total_Quantity DESC;
 ```
-Time => 174 rows retrieved starting from 1 in 82 ms (execution: 822 ms, fetching: 29 ms)
+Time => 174 rows retrieved starting from 1 in 869 ms (execution: 834 ms, fetching: 35 ms)
 
 #### 5. Query to fetch no of quantity purchased by age group for each category
 ```
@@ -506,7 +505,7 @@ ON products.category_id=category.category_id
 GROUP BY category.category_name, customer.age
 ORDER BY customer.age ASC,Total_Quantity DESC;
 ```
-Time => 189 rows retrieved starting from 1 in 813 ms (execution: 783 ms, fetching: 30 ms)
+Time => 189 rows retrieved starting from 1 in 865 ms (execution: 829 ms, fetching: 36 ms)
 
 ### MongoDB Single Collection Queries and Results
 #### 1. Query to fetch frequently purchased category by a customer
