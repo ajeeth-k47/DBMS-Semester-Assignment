@@ -1025,10 +1025,120 @@ Time and Results:
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/b4cedb7a-20a5-4747-9164-669fe9c04a70)
 
 
+#### 4. Query to fetch the total amount of quantity purchased per category by all customers in a state
+```
+start_time = time.time()
+def main():
+    cluster = Cluster(['172.17.0.2'])
+    session = cluster.connect('my_keyspace')
+    query = """
+    SELECT state, category_name, quantity
+    FROM denormalized_data
+    """
+    rows = session.execute(query)
+    state_category_stats = defaultdict(lambda: defaultdict(int))
+    for row in rows:
+        state = row.state
+        category_name = row.category_name
+        quantity = row.quantity
+        state_category_stats[state][category_name] += quantity
+    for state, categories in state_category_stats.items():
+        print(f"State: {state}")
+        for category_name, total_quantity in categories.items():
+            print(f"   Category Name: {category_name}, Total Quantity: {total_quantity}")
+    cluster.shutdown()
+if __name__ == "__main__":
+    main()
+end_time = time.time()
+```
 
+Time and Results: 
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/ee5572c8-2dea-4b31-b842-224ac375bdd9)
 
-
-
+#### 5. Query to fetch no of quantity purchased by age group for each category
+```
+start_time = time.time()
+def connect_to_cassandra():
+    try:
+        cluster = Cluster(['172.17.0.2'])
+        session = cluster.connect('my_keyspace')
+        return cluster, session
+    except Exception as e:
+        print(f"Error connecting to Cassandra: {str(e)}")
+        return None, None
+def fetch_data(session):
+    try:
+        query = """
+        SELECT age, category_name, quantity
+        FROM denormalized_data
+        """
+        rows = session.execute(query)
+        return rows
+    except Exception as e:
+        print(f"Error executing query: {str(e)}")
+        return None
+def process_data(rows):
+    try:
+        age_group_category_stats = defaultdict(lambda: defaultdict(int))
+        for row in rows:
+            age = row.age
+            category_name = row.category_name
+            quantity = row.quantity
+            if 20 <= age <= 29:
+                age_group = '20-29'
+            elif 30 <= age <= 39:
+                age_group = '30-39'
+            elif 40 <= age <= 49:
+                age_group = '40-49'
+            elif 50 <= age <= 59:
+                age_group = '50-59'
+            elif 60 <= age <= 69:
+                age_group = '60-69'
+            elif 70 <= age <= 79:
+                age_group = '70-79'
+            else:
+                age_group = 'Other'
+            age_group_category_stats[age_group][category_name] += quantity
+        return age_group_category_stats
+    except Exception as e:
+        print(f"Error processing data: {str(e)}")
+        return None
+def print_stats(age_group_category_stats):
+    try:
+        for age_group, categories in age_group_category_stats.items():
+            print(f"Age Group: {age_group}")
+            for category_name, total_quantity in categories.items():
+                print(f"    Category Name: {category_name}, Total Quantity: {total_quantity}")
+            print()
+    except Exception as e:
+        print(f"Error printing statistics: {str(e)}")
+def close_connection(cluster):
+    try:
+        if cluster:
+            cluster.shutdown()
+    except Exception as e:
+        print(f"Error closing connection: {str(e)}")
+def main():
+    cluster, session = connect_to_cassandra()
+    if not session:
+        return
+    rows = fetch_data(session)
+    if not rows:
+        close_connection(cluster)
+        return
+    age_group_category_stats = process_data(rows)
+    if not age_group_category_stats:
+        close_connection(cluster)
+        return
+    print("Age Group Category Statistics:")
+    print_stats(age_group_category_stats)
+    close_connection(cluster)
+if __name__ == "__main__":
+    main()
+end_time = time.time()
+```
+Time and Results: 
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/d0ee28d0-69fe-43d4-8783-0bbac8372afc)
 
 
 
