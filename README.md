@@ -752,11 +752,7 @@ db.shopping_cart.aggregate([
   {  $group: {  _id: { category: "$product_info.category" }, 
       Total_Purchase_Price_For_EachCategory: { $sum: "$orders.sales.total_price" }, 
       customer_info: {  
-        $first: {  first_name: "$first_name",  
-          last_name: "$last_name",  
-          gender: "$gender",  
-          home_address: "$home_address"  
-        }  } 
+        $first: {  first_name: "$first_name",  last_name: "$last_name",  gender: "$gender",  home_address: "$home_address"  }  } 
     }  },
   { $sort: { Total_Purchase_Price_For_EachCategory: -1 } },
   { $limit: 1 },
