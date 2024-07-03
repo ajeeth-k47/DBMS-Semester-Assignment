@@ -741,42 +741,33 @@ db.shopping_cart.aggregate([
   { $match: { customer_id: 1005 } },
   { $unwind: "$orders" },
   { $unwind: "$orders.sales" },
-  { 
-    $lookup: { 
+  { $lookup: { 
       from: "products", 
       localField: "orders.sales.product_id", 
       foreignField: "product_id", 
-      as: "product_info" 
+      as: "product_info"
     } 
   },
   { $unwind: "$product_info" },
-  { 
-    $group: { 
-      _id: { category: "$product_info.category" }, 
+  {  $group: {  _id: { category: "$product_info.category" }, 
       Total_Purchase_Price_For_EachCategory: { $sum: "$orders.sales.total_price" }, 
       customer_info: {  
-        $first: {  
-          first_name: "$first_name",  
+        $first: {  first_name: "$first_name",  
           last_name: "$last_name",  
           gender: "$gender",  
           home_address: "$home_address"  
-        }  
-      } 
-    } 
-  },
+        }  } 
+    }  },
   { $sort: { Total_Purchase_Price_For_EachCategory: -1 } },
   { $limit: 1 },
-  { 
-    $project: { 
+  {  $project: { 
       _id: 0, 
       first_name: "$customer_info.first_name", 
       last_name: "$customer_info.last_name", 
       gender: "$customer_info.gender", 
       home_address: "$customer_info.home_address", 
       category: "$_id.category", 
-      Total_Purchase_Price_For_EachCategory: 1 
-    } 
-  }
+      Total_Purchase_Price_For_EachCategory: 1 } }
 ])
 ```
 Time => ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/87c2a9c7-44ca-4657-8e27-ad88118e1d94)
