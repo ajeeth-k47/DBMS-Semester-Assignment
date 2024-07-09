@@ -10,6 +10,7 @@
 4. [MongoDB Single Collection Queries and Results](#mongodb-single-collection-queries-and-results)
 5. [MongoDB Two Collections Queries and Results](#mongodb-two-collections-queries-and-results)
 6. [Cassandra Queries and Results](#cassandra-queries-and-results)
+7. [Comparision of Results](#comparision-of-results)
 
 ## Description
 This project aims to determine the top product categories driving sales in an e-commerce environment and analyze how these preferences vary by customer demographics and age groups. To achieve this, we evaluate the performance and suitability of three different database systems: MySQL, MongoDB, and Cassandra.
@@ -1175,6 +1176,10 @@ end_time = time.time()
 ```
 Time and Results: 
 ![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/d0ee28d0-69fe-43d4-8783-0bbac8372afc)
+
+## Comparision of Results
+![image](https://github.com/ajeeth-k47/DBMS-Semester-Assignment/assets/66105938/2ceec8b7-1ddf-472a-afeb-505f3d58d2f2)
+
 
 
 
